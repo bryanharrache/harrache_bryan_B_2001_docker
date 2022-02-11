@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+    mongodb:
+      image: mongo
+      container_name: mongo
+      volumes:
+        - data:/data
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=user
+        - MONGO_INITDB_ROOT_PASSWORD=pass
+      networks:
+        - backend
+      restart: always
+    api:
+      build: ./backend
+      container_name: backend
+      networks:
+        - backend
+        - frontend
+      restart: always
+    app:
+      build: ./frontend
+      container_name: frontend
+      networks:
+        - frontend
+      ports:
+        - 3000:8080
+volumes:
+  data: {}
+networks:
+  backend:
+  frontend:
+
